@@ -1,16 +1,14 @@
-import { authorizer, createSubjects } from "@openauthjs/openauth";
+import { authorizer } from "@openauthjs/openauth";
 import { GoogleAdapter } from "@openauthjs/openauth/adapter/google";
 import { MemoryStorage } from "@openauthjs/openauth/storage/memory";
+import { jwtDecode } from "jwt-decode";
+import { subjects } from "./subjects";
 
-import { object, string } from "valibot";
-
-const subjects = createSubjects({
-  user: object({
-    userID: string(),
+const app = authorizer({
+  subjects,
+  storage: MemoryStorage({
+    persist: "./persist.json",
   }),
-});
-
-export const app = authorizer({
   providers: {
     google: GoogleAdapter({
       clientID: process.env.GOOGLE_CLIENT_ID!,
@@ -18,22 +16,15 @@ export const app = authorizer({
       scopes: ["email", "profile"],
     }),
   },
-  subjects,
-  async success(ctx, value) {
-    let userID;
-    switch (value.provider) {
-      case "google":
-        userID = "1234";
-        break;
+  success: async (ctx, value) => {
+    if (value.provider === "google") {
+      const decoded = jwtDecode(value.tokenset.raw.id_token);
+      return ctx.subject("user", {
+        id: decoded.sub || "not found",
+      });
     }
-    if (!userID) {
-      throw new Error("Invalid userID");
-    }
-    return ctx.subject("user", {
-      userID,
-    });
+    throw new Error("Invalid provider");
   },
-  storage: MemoryStorage(),
 });
 
 export default app;
