@@ -8,8 +8,11 @@
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
+  "dependencies": {
+    "auth": "workspace:*",
+    "db": "workspace:*"
+  },
   "exports": {
     ".": "./index.ts"
   }
 }
-

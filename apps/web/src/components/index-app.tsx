@@ -1,17 +1,14 @@
-import { AccountList } from "./account-list";
 import { AuthProvider } from "./auth-provider";
+import { CreateAccount } from "./create-account";
 
 interface IndexAppProps {
-  initialAccessToken: string;
+  initialAccessToken: string | null;
 }
 
 const IndexApp = (props: IndexAppProps) => {
   return (
     <AuthProvider initialAccessToken={props.initialAccessToken}>
-      <div>
-        <h1>Index App</h1>
-        <AccountList />
-      </div>
+      <CreateAccount />
     </AuthProvider>
   );
 };

@@ -1,0 +1,2 @@
+ALTER TABLE "accounts" ADD COLUMN "ownerId" varchar(255);--> statement-breakpoint
+ALTER TABLE "accounts" ADD CONSTRAINT "accounts_ownerId_users_id_fk" FOREIGN KEY ("ownerId") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;

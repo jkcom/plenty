@@ -63,7 +63,7 @@ app.use("*", async (c, next) => {
   // Set the user
   c.set("user", user);
 
-  next();
+  return next();
 });
 
 // Routes

@@ -1,2 +1,2 @@
 export * from "./src/schema";
-export { db } from "./src/db";
+export * from "./src/relations";

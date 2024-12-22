@@ -1,10 +1,37 @@
 ---
+import IndexApp from '../components/index-app';
 import Layout from '../layouts/Layout.astro';
-import IndexApp from '../components/index-app.tsx';
+import type { AccountsPayload } from 'types';
+
+const accounts = await (async () => {
+  if (Astro.locals.accessToken) {
+    const response = await fetch("http://localhost:3001/rest/accounts", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${Astro.locals.accessToken}`,
+      },
+    });
+    return  (await response.json()) as AccountsPayload;
+  } else {
+    return null
+  }
+})()
+
 ---
 
 <Layout>
   Hello {Astro.locals.user?.name}
+  <IndexApp client:load initialAccessToken={Astro.locals.accessToken} />
   <a href="/api/auth/log-out">Log out</a> 
-  <IndexApp client:load initialAccessToken={Astro.locals.accessToken}  />
+  {accounts && <>
+    <ul>
+    {accounts.accounts.map((account) => (
+      <li >
+        <a href={account.slug}>
+        {account.name}
+        </a>
+      </li>
+    ))}
+  </ul>
+</>}
 </Layout>

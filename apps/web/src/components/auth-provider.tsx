@@ -15,10 +15,5 @@ export const AuthProvider = (props: AuthProviderProps) => {
       authStore.setAccessToken(props.initialAccessToken);
     }
   }, [props.initialAccessToken]);
-  return (
-    <>
-      {authStore.accessToken && <div>Logged in</div>}
-      {props.children}
-    </>
-  );
+  return <>{authStore.accessToken && <>{props.children}</>}</>;
 };
