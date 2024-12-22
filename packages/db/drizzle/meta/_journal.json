@@ -1,0 +1,34 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1734763800531,
+      "tag": "0000_bumpy_lethal_legion",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1734763810809,
+      "tag": "0001_soft_valkyrie",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1734765040338,
+      "tag": "0002_hot_bastion",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1734768573042,
+      "tag": "0003_shiny_gateway",
+      "breakpoints": true
+    }
+  ]
+}

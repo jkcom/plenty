@@ -11,6 +11,7 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "auth": "workspace:*",
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.38.2",
     "pg": "^8.13.1"
