@@ -1,12 +1,18 @@
-import { Hono } from "hono";
+import { Account, AccountUser, type AccountSelectType } from "db";
+import { eq } from "drizzle-orm";
 import { validator } from "hono/validator";
+import type { AbstractPayload } from "types";
 import { z } from "zod";
+
+import { and } from "drizzle-orm";
+import { Hono } from "hono";
 import { db } from "../db";
-import { Account, AccountUser, User } from "db";
-import { eq, and } from "drizzle-orm";
+import { zValidator } from "@hono/zod-validator";
+import { assertTypeMatch } from "../utils/misc";
 
 const app = new Hono();
 
+// All
 app.get("/", async (c) => {
   const user = c.get("user");
   const results = await db
@@ -24,22 +30,29 @@ app.get("/", async (c) => {
   });
 });
 
-export const accountPostSchema = z.object({
-  accountName: z.string(),
+// Create account
+export const createAccountInputSchema = z.object({
+  name: z.string(),
+  slug: z.string(),
 });
+
+export type CreateAccountInputType = z.infer<typeof createAccountInputSchema>;
+export type CreateAccountResponseType = AbstractPayload & {
+  account: AccountSelectType;
+};
 
 app.post(
   "/",
   validator("json", async (value, c) => {
     const json = await c.req.json();
-    const parsed = accountPostSchema.safeParse(json);
+    const parsed = createAccountInputSchema.safeParse(json);
     if (!parsed.success) {
       return c.text("Invalid!", 401);
     }
     return parsed.data;
   }),
   async (c) => {
-    const { accountName } = c.req.valid("json");
+    const data = c.req.valid("json");
     const user = c.get("user");
 
     // Create account
@@ -47,8 +60,7 @@ app.post(
       await db
         .insert(Account)
         .values({
-          name: accountName,
-          slug: accountName,
+          ...data,
           ownerId: user.id,
         })
         .returning()
@@ -66,8 +78,58 @@ app.post(
 
     return c.json({
       status: "success",
-      account: accountName,
+      account,
     });
+  },
+);
+
+// Slug available
+const slugAvaliableSchema = z.object({
+  slug: z.string(),
+});
+
+export type SlugAvailableInputType = z.infer<typeof slugAvaliableSchema>;
+export type SlugAvailableResponseType = AbstractPayload & {
+  data:
+    | {
+        available: false;
+        reason: string;
+      }
+    | {
+        available: true;
+      };
+};
+
+app.post(
+  "/slug-available",
+  zValidator("json", slugAvaliableSchema),
+  async (c) => {
+    const { slug } = c.req.valid("json");
+    const results = await db
+      .select()
+      .from(Account)
+      .where(eq(Account.slug, slug));
+
+    if (results.length === 0) {
+      return c.json(
+        assertTypeMatch<SlugAvailableResponseType>({
+          status: "success",
+          data: {
+            available: true,
+          },
+        }),
+      );
+    } else {
+      return c.json(
+        assertTypeMatch<SlugAvailableResponseType>({
+          status: "error",
+          data: {
+            available: false,
+            reason: "Slug is already taken",
+          },
+        }),
+      );
+    }
   },
 );
 

@@ -15,13 +15,14 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "types": "workspace:*",
-    "db": "workspace:*",
-    "auth": "workspace:*",
+    "@hono/zod-validator": "^0.4.2",
     "@openauthjs/openauth": "0.2.5",
+    "auth": "workspace:*",
+    "db": "workspace:*",
     "drizzle-orm": "^0.38.2",
     "hono": "^4.6.14",
     "pg": "^8.13.1",
+    "types": "workspace:*",
     "zod": "^3.24.1"
   }
 }

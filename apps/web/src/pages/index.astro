@@ -2,6 +2,7 @@
 import IndexApp from '../components/index-app';
 import Layout from '../layouts/Layout.astro';
 import type { AccountsPayload } from 'types';
+import { Button } from '../components/ui/button';
 
 const accounts = await (async () => {
   if (Astro.locals.accessToken) {
@@ -22,14 +23,18 @@ const accounts = await (async () => {
 <Layout>
   Hello {Astro.locals.user?.name}
   <IndexApp client:load initialAccessToken={Astro.locals.accessToken} />
-  <a href="/api/auth/log-out">Log out</a> 
+  <Button>
+    Test
+  </Button>
   {accounts && <>
     <ul>
     {accounts.accounts.map((account) => (
       <li >
-        <a href={account.slug}>
+  <a href={account.slug}>
+      <Button >
         {account.name}
-        </a>
+      </Button>
+      </a>
       </li>
     ))}
   </ul>

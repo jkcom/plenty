@@ -1,6 +1,5 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import accounts from "./src/rest/accounts";
 import { subjects } from "auth/subjects";
 
 import { createClient } from "@openauthjs/openauth/client";
@@ -9,10 +8,16 @@ import { User, type UserSelectType } from "db";
 
 import { eq } from "drizzle-orm";
 import { db } from "./src/db";
+import accounts from "./src/rest/accounts";
+import accountSlug from "./src/misc/account-slug-1";
+import { suggested } from "./src/misc/account-slug/suggested";
+
 export const client = createClient({
   clientID: "astro",
   issuer: "http://localhost:3000",
 });
+
+export * from "./src/client";
 
 declare module "hono" {
   interface ContextVariableMap {
@@ -68,6 +73,7 @@ app.use("*", async (c, next) => {
 
 // Routes
 app.route("/rest/accounts", accounts);
+app.route("/misc/account-slug/suggested", suggested);
 
 export default {
   port: 3001,

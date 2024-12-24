@@ -9,3 +9,7 @@ export type AccountsPayload = AbstractPayload & {
     accountUser: AccountUserSelectType;
   })[];
 };
+
+export type CreateAccountPayload = AbstractPayload & {
+  account: AccountSelectType;
+};
