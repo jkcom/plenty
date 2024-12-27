@@ -1,0 +1,7 @@
+---
+Astro.cookies.delete("refresh_token", { path: "/" });
+Astro.cookies.delete("access_token", { path: "/" });
+Astro.cookies.delete("adapter", { path: "/" });
+return Astro.redirect("/");
+---
+<h1>Logging out...</h1>

@@ -29,6 +29,7 @@ const app = authorizer({
         username: decoded.email,
         provider: "google",
         providerId: decoded.sub,
+        picture: decoded.picture,
       });
       return ctx.subject("user", {
         id: decoded.sub || "not found",

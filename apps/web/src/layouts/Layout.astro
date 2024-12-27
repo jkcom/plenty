@@ -1,17 +1,19 @@
 ---
+import Topbar from '@/astro-components/topbar.astro';
 import '../styles/global.css';
+const initialDark = Astro.cookies.get('theme')?.value === 'dark';
 ---
 <!doctype html>
-<html lang="en">
+<html lang="en" class={initialDark ? "dark" : ""}>
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+<title>{Astro.locals.account ? `Plenty | ${Astro.locals.account.name}` : "Plenty"}</title>
 	</head>
-	<body class="dark dark:bg-slate-800 dark:text-white">
-    <h1 class="text-"></h1>
+	<body class=" dark:bg-slate-800 dark:text-white">
+    <Topbar />
 		<slot />
 	</body>
 </html>

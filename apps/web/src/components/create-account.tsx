@@ -43,8 +43,8 @@ export const CreateAccount = () => {
       <button
         onClick={() => {
           void createAccount(authStore.accessToken!, {
-            name: "Test",
-            slug: "test",
+            name,
+            slug: slug || suggestedAccountSlugQuery.data?.slug!,
           });
         }}
       >

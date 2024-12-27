@@ -9,6 +9,7 @@ export const User = pgTable("users", {
   email: varchar({ length: 255 }).notNull().unique(),
   provider: varchar({ length: 255 }).notNull(),
   providerId: varchar({ length: 255 }).notNull(),
+  picture: varchar({ length: 255 }),
 });
 
 export type UserInsertType = InferInsertModel<typeof User>;

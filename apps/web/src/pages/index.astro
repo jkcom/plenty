@@ -3,21 +3,6 @@ import IndexApp from '../components/index-app';
 import Layout from '../layouts/Layout.astro';
 import type { AccountsPayload } from 'types';
 import { Button } from '../components/ui/button';
-
-const accounts = await (async () => {
-  if (Astro.locals.accessToken) {
-    const response = await fetch("http://localhost:3001/rest/accounts", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${Astro.locals.accessToken}`,
-      },
-    });
-    return  (await response.json()) as AccountsPayload;
-  } else {
-    return null
-  }
-})()
-
 ---
 
 <Layout>
@@ -26,17 +11,4 @@ const accounts = await (async () => {
   <Button>
     Test
   </Button>
-  {accounts && <>
-    <ul>
-    {accounts.accounts.map((account) => (
-      <li >
-  <a href={account.slug}>
-      <Button >
-        {account.name}
-      </Button>
-      </a>
-      </li>
-    ))}
-  </ul>
-</>}
 </Layout>

@@ -10,6 +10,12 @@ export const UserRelations = relations(User, ({ many }) => ({
 }));
 
 export const AccountUserRelations = relations(AccountUser, ({ one }) => ({
-  account: one(Account),
-  user: one(User),
+  account: one(Account, {
+    fields: [AccountUser.accountId],
+    references: [Account.id],
+  }),
+  user: one(User, {
+    fields: [AccountUser.userId],
+    references: [User.id],
+  }),
 }));

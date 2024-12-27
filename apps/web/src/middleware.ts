@@ -1,7 +1,7 @@
 import { defineMiddleware } from "astro:middleware";
 import { client, setTokens } from "./auth";
 import { subjects } from "auth/subjects";
-import { getUser } from "./utils/db-utils";
+import { getAccount, getContext, getUser } from "./utils/db-utils";
 
 export const onRequest = defineMiddleware(async (ctx, next) => {
   if (ctx.routePattern === "/callback") {
@@ -21,11 +21,27 @@ export const onRequest = defineMiddleware(async (ctx, next) => {
           setTokens(ctx, verified.tokens.access, verified.tokens.refresh);
         }
         if (verified.subject.properties) {
-          console.log(verified.subject.properties);
-          ctx.locals.user = await getUser(verified.subject.properties.id);
+          // Get context
+          const context = await getContext({
+            providerId: verified.subject.properties.id,
+            accountSlug: ctx.params.accountSlug as string,
+          });
+
+          if (context) {
+            ctx.locals.user = context.user!;
+            ctx.locals.userAccounts = context.userAccounts;
+            ctx.locals.account = context.account;
+            ctx.locals.accountUser = context.accountUser;
+          }
         }
         return next();
       }
+    } else {
+      const { url } = await client.authorize(
+        new URL(ctx.request.url).origin + "/callback",
+        "code",
+      );
+      return Response.redirect(url, 302);
     }
   } catch (e) {}
 
