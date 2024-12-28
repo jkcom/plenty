@@ -24,7 +24,7 @@ export const onRequest = defineMiddleware(async (ctx, next) => {
           // Get context
           const context = await getContext({
             providerId: verified.subject.properties.id,
-            accountSlug: ctx.params.accountSlug as string,
+            accountSlug: ctx.params.accountSlug?.split("/")[0] as string,
           });
 
           if (context) {

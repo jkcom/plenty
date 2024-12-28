@@ -1,0 +1,11 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import {PlentyApp} from '../../components/plenty-app';
+---
+<Layout>
+  {Astro.locals.account ? <>
+  <PlentyApp 
+    initialUrl={Astro.url.pathname} 
+    client:load initialContext={Astro.locals} />
+</> : <h1>Account not found</h1>}
+</Layout>

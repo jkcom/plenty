@@ -10,11 +10,11 @@ declare namespace App {
     } | null;
     userAccounts?: {
       name: string;
-      slug: string;
     }[];
     account?: {
       name: string;
       id: string;
+      slug: string;
     } | null;
     accountUser?: {
       role: "user" | "admin" | "mod";

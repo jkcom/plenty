@@ -2,15 +2,16 @@
   "name": "plenty-test",
   "module": "index.ts",
   "type": "module",
+  "packageManager": "bun@1.1.40",
   "workspaces": [
     "packages/*",
     "apps/*"
   ],
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "turbo": "^2.3.3"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
   }
 }
-
