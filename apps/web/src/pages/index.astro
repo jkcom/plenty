@@ -6,9 +6,5 @@ import { Button } from '../components/ui/button';
 ---
 
 <Layout>
-  Hello {Astro.locals.user?.name}
   <IndexApp client:load initialAccessToken={Astro.locals.accessToken} />
-  <Button>
-    Test
-  </Button>
 </Layout>

@@ -5,9 +5,12 @@ const accounts = Astro.locals.userAccounts
 const user = Astro.locals.user
 const initialDark = Astro.cookies.get('theme')?.value === 'dark';
 ---
-<nav class="p-1 px-2 w-full flex flex-row gap-4 items-center border-b flex-between">
+<nav class="p-1 px-2 w-full flex flex-row gap-4 items-center border-b flex-between fixed left-0 r-0 top-0 h-8 bg-background">
   <div class="flex flex-1 flex-row gap-6 items-center">
-  <h1 class="font-bold text-sm">Plenty</h1>
+    <a href="/">
+    <h1 class="font-bold text-sm">
+      Plenty</h1>
+    </a>
     <div class="flex flex-row gap-4 top-.5 relative items-center">
   {accounts && <>
     {accounts.map((account) => (

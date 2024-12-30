@@ -8,7 +8,11 @@ export const Link = (props: LinkProps) => {
   const { navigate } = useRouter();
   return (
     <a
+      className="hover:underline text-primary text-sm"
       onClick={(e) => {
+        e.preventDefault();
+      }}
+      onMouseDown={(e) => {
         e.preventDefault();
         navigate({ path: props.href });
       }}

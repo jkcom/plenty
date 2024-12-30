@@ -7,6 +7,11 @@ declare namespace App {
     user: {
       id: string;
       name: string;
+      username: string;
+      email: string;
+      provider: string;
+      providerId: string;
+      picture: string;
     } | null;
     userAccounts?: {
       name: string;
@@ -15,6 +20,7 @@ declare namespace App {
       name: string;
       id: string;
       slug: string;
+      ownerId: string;
     } | null;
     accountUser?: {
       role: "user" | "admin" | "mod";
