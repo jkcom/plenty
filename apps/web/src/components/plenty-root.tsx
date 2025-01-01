@@ -1,5 +1,7 @@
 import { useSync } from "sync";
 import { AccountNameForm } from "./account-name-form";
+import { PostForm } from "./post-form";
+import { PostList } from "./post-list";
 
 export const PlentyRoot = () => {
   const { data } = useSync();
@@ -9,6 +11,8 @@ export const PlentyRoot = () => {
       <p>{data?.account.name}</p>
       <p>{data?.account.owner?.name}</p>
       <AccountNameForm />
+      <PostForm />
+      <PostList />
     </>
   );
 };

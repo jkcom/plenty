@@ -2,17 +2,31 @@ import { Link } from "./link";
 import { MicroRouter, useRouter } from "./micro-router";
 import { SyncProvider } from "sync";
 import { PlentyRoot } from "./plenty-root";
+import { usePoolStore } from "@/use-pool-store";
 
 interface PlentyAppProps {
   initialContext?: App.Locals;
   initialUrl: string;
 }
 export const PlentyApp = (props: PlentyAppProps) => {
-  if (!props.initialContext?.account || !props.initialContext?.user) {
+  const poolStore = usePoolStore({
+    version: 1,
+    accountId: props.initialContext?.account?.id,
+    userId: props.initialContext?.user?.id,
+    objectStores: [{ model: "post" }],
+  });
+  if (
+    !props.initialContext?.account ||
+    !props.initialContext?.user ||
+    !poolStore.ready ||
+    !poolStore.hydrationPool
+  ) {
     return <h1>{"Missing context"}</h1>;
   }
   return (
     <SyncProvider
+      hydrate={poolStore.hydrationPool}
+      store={poolStore}
       user={props.initialContext.user}
       account={props.initialContext.account}
     >

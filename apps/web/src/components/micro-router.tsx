@@ -44,7 +44,7 @@ export const MicroRouter: React.FC<{
 }> = ({ children, initialPath, baseSegments }) => {
   const [path, setPath] = useState<string[]>(initialPath.split("/"));
   const navigate: MicroRouterContextType["navigate"] = (options) => {
-    history.replaceState(null, "", options.path);
+    history.pushState(null, "", options.path);
   };
 
   useEffect(() => {
