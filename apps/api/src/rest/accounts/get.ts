@@ -2,9 +2,6 @@ import { Account, AccountUser } from "db";
 import { and, eq } from "drizzle-orm";
 import { Hono } from "hono";
 import { db } from "../../db";
-import { z } from "zod";
-import type { AbstractPayload } from "types";
-import { validator } from "hono/validator";
 
 const app = new Hono();
 

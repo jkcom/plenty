@@ -1,10 +1,13 @@
+import type { Mutation } from "./mutations";
 import type { PoolItem } from "./types";
 
-export type PoolStoreKey = {
-  model: string;
-};
+export type SyncStore = {
+  // Pool
+  getHydration: () => Promise<PoolItem[]>;
+  storePoolItems: (items: PoolItem[]) => void;
 
-export type PoolStore = {
-  getAll: (storeKey: PoolStoreKey) => PoolItem[];
-  set: (storeKey: PoolStoreKey, items: PoolItem[]) => void;
+  // Mutations
+  storeMutations: (mutations: Mutation[]) => void;
+  getPushPendingMutations: () => Promise<Mutation[]>;
+  updateMutations: (mutations: Mutation[]) => void;
 };

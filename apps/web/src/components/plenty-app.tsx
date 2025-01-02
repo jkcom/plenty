@@ -1,42 +1,41 @@
+import { useBrowserSyncStore } from "@/hooks/browser-sync-store";
+import { SyncProvider } from "sync";
 import { Link } from "./link";
 import { MicroRouter, useRouter } from "./micro-router";
-import { SyncProvider } from "sync";
 import { PlentyRoot } from "./plenty-root";
-import { usePoolStore } from "@/use-pool-store";
+import { useAuthStore } from "@/stores/auth";
+import { AuthProvider } from "./auth-provider";
 
 interface PlentyAppProps {
   initialContext?: App.Locals;
   initialUrl: string;
 }
 export const PlentyApp = (props: PlentyAppProps) => {
-  const poolStore = usePoolStore({
-    version: 1,
+  const authStore = useAuthStore();
+  const syncStore = useBrowserSyncStore({
+    version: 2,
     accountId: props.initialContext?.account?.id,
     userId: props.initialContext?.user?.id,
-    objectStores: [{ model: "post" }],
   });
-  if (
-    !props.initialContext?.account ||
-    !props.initialContext?.user ||
-    !poolStore.ready ||
-    !poolStore.hydrationPool
-  ) {
+  if (!props.initialContext?.account || !props.initialContext?.user) {
     return <h1>{"Missing context"}</h1>;
   }
   return (
-    <SyncProvider
-      hydrate={poolStore.hydrationPool}
-      store={poolStore}
-      user={props.initialContext.user}
-      account={props.initialContext.account}
-    >
-      <MicroRouter
-        baseSegments={["p", props.initialContext.account.slug]}
-        initialPath={props.initialUrl}
+    <AuthProvider initialAccessToken={props.initialContext.accessToken}>
+      <SyncProvider
+        accessToken={authStore.accessToken!}
+        store={syncStore}
+        user={props.initialContext.user}
+        account={props.initialContext.account}
       >
-        <InnerApp />
-      </MicroRouter>
-    </SyncProvider>
+        <MicroRouter
+          baseSegments={["p", props.initialContext.account.slug]}
+          initialPath={props.initialUrl}
+        >
+          <InnerApp />
+        </MicroRouter>
+      </SyncProvider>
+    </AuthProvider>
   );
 };
 

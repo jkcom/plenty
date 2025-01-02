@@ -1,16 +1,16 @@
+import { subjects } from "auth/subjects";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import { subjects } from "auth/subjects";
 
 import { createClient } from "@openauthjs/openauth/client";
-import { HTTPException } from "hono/http-exception";
 import { User, type UserSelectType } from "db";
+import { HTTPException } from "hono/http-exception";
 
 import { eq } from "drizzle-orm";
 import { db } from "./src/db";
-import accounts from "./src/rest/accounts";
-import accountSlug from "./src/misc/account-slug-1";
 import { suggested } from "./src/misc/account-slug/suggested";
+import accounts from "./src/rest/accounts";
+import mutations from "./src/rest/mutations";
 
 export const client = createClient({
   clientID: "astro",
@@ -73,6 +73,7 @@ app.use("*", async (c, next) => {
 
 // Routes
 app.route("/rest/accounts", accounts);
+app.route("/rest/mutations", mutations);
 app.route("/misc/account-slug/suggested", suggested);
 
 export default {

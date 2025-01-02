@@ -8,6 +8,7 @@ import type {
   SuggestedAccountSlugInputType,
   SuggestedAccountSlugResponseType,
 } from "./misc/account-slug/suggested";
+import type { Mutation } from "../../../packages/sync/src/mutations";
 
 // Create account
 export const createAccount = async (
@@ -53,14 +54,27 @@ export const suggestedAccountSlug = async (
   const response = await fetch(
     "http://localhost:3001/misc/account-slug/suggested",
     {
-      method: "POST",
+      method: "post",
       body: JSON.stringify(data),
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        "content-type": "application/json",
+        authorization: `bearer ${token}`,
       },
     },
   );
 
   return (await response.json()) as SuggestedAccountSlugResponseType;
+};
+
+export const postMutations = async (token: string, mutations: Mutation[]) => {
+  const response = await fetch("http://localhost:3001/rest/mutations", {
+    method: "post",
+    body: JSON.stringify(mutations),
+    headers: {
+      "content-type": "application/json",
+      authorization: `bearer ${token}`,
+    },
+  });
+
+  return await response.json();
 };
